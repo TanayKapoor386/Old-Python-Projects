@@ -1,0 +1,87 @@
+import time
+
+# Function to display the grid
+def display_grid(grid):
+    for row in grid:
+        print("".join(["o" if cell else "-" for cell in row]))
+    print("\n")
+
+# Function to count live neighbors for a cell
+def count_neighbors(grid, x, y):
+    live_neighbors = 0
+    for dx in [-1, 0, 1]:
+        for dy in [-1, 0, 1]:
+            if dx == 0 and dy == 0:
+                continue
+            if 0 <= x + dx < len(grid) and 0 <= y + dy < len(grid[0]) and grid[x + dx][y + dy]:
+                live_neighbors += 1
+    return live_neighbors
+
+# Function to apply Conway's rules and update the grid
+def apply_rules(grid):
+    new_grid = [[False for _ in range(len(grid[0]))] for _ in range(len(grid))]
+    for x in range(len(grid)):
+        for y in range(len(grid[0])):
+            live_neighbors = count_neighbors(grid, x, y)
+            if grid[x][y]:
+                if live_neighbors < 2 or live_neighbors > 3:
+                    new_grid[x][y] = False
+                else:
+                    new_grid[x][y] = True
+            else:
+                if live_neighbors == 3:
+                    new_grid[x][y] = True
+    return new_grid
+
+# Initialize the grid with a hardcoded initial configuration
+grid = [
+    [False, False, False, False, False],
+    [False, False, True, False, False],
+    [False, False, True, False, False],
+    [False, False, True, False, False],
+    [False, False, False, False, False]
+]
+
+# Initialize players and turns
+players = ["Player 1", "Player 2"]
+current_player = 0
+
+# Main game loop
+while True:
+    # Display the current player's turn and the grid
+    print(f"{players[current_player]}'s Turn:")
+    display_grid(grid)
+
+    # Prompt the player for their action
+    action = input("Enter 'A' to add a cell or 'R' to remove a cell (Q to quit): ").strip().upper()
+
+    if action == "Q":
+        break
+    elif action == "A" or action == "R":
+        while True:
+            try:
+                x = int(input("Enter the row (0-4): "))
+                y = int(input("Enter the column (0-4): "))
+                if 0 <= x < 5 and 0 <= y < 5:
+                    break
+                else:
+                    print("Invalid coordinates. Try again.")
+            except ValueError:
+                print("Invalid input. Enter valid coordinates.")
+
+        # Update the grid based on the player's action
+        if action == "A":
+            grid[x][y] = True
+        else:
+            grid[x][y] = False
+
+    # Apply Conway's rules to update the grid
+    grid = apply_rules(grid)
+
+    # Alternate player turns
+    current_player = 1 - current_player
+
+    # Add a short delay for a smooth transition between turns
+    time.sleep(1)
+
+print("Game Over!")
