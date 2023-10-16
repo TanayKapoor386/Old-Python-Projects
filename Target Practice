@@ -1,0 +1,83 @@
+import turtle
+import random
+
+# sets background color to black
+screen = turtle.Screen()
+screen.bgcolor("black")
+
+# make player turtle
+t = turtle.Turtle()
+t.speed(0)
+t.shape("turtle")
+t.color("white")
+
+# functions for player turtle and bullet direction
+def right():
+    t.right(3)
+def left():
+    t.left(3)
+ 
+# make bullet shape
+screen.register_shape("bullet", ((0,0), (5,0), (5,30), (0,30)))
+
+# Updated shootBullet function with more iterations for bullet range
+def shootBullet():
+    bullet = turtle.Turtle()
+    bullet.speed(0)
+    bullet.penup()
+    bullet.color("yellow")
+    bullet.shape("bullet")
+    bullet.setheading(t.heading())
+    
+    # Increase the number of iterations to make the bullet travel farther
+    for i in range(50):  # You can adjust this number
+        bullet.forward(10) 
+        if abs(bullet.xcor() - target.xcor()) < 10 and abs(bullet.ycor() - target.ycor()) < 10:
+            bullet.ht()
+            target.goto(random.randint(-340,340), random.randint(-210,220))
+        if bullet.xcor() < -350 or bullet.xcor() > 350 or bullet.ycor() < -220 or bullet.ycor() > 220:
+            bullet.ht()
+
+# event listeners to determine player turtle and bullet direction     
+screen.onkey(right,"right")
+screen.onkey(left,"left")
+
+# event listeners to shoot a bullet
+screen.onkey(shootBullet,"space")
+
+screen.listen() 
+
+# make target turtle
+target = turtle.Turtle()
+target.speed(0)
+target.penup()
+target.color(29, 214, 242)
+target.shape("circle")
+target.goto(random.randint(-340,340), random.randint(-210,220))
+
+# define coordinate system (not needed)
+a = turtle.Turtle()
+a.speed(0)
+a.color("white")
+a.goto(-350,0)
+
+b = turtle.Turtle()
+b.speed(0)
+b.color("white")
+b.goto(340,0)
+
+c = turtle.Turtle()
+c.speed(0)
+c.color("white")
+c.goto(0,310)
+
+d = turtle.Turtle()
+d.speed(0)
+d.color("white")
+d.goto(0,-280)
+
+#functions for bullet direction
+def bulletRight():
+    bullet.right(10)
+def bulletLeft():
+    bullet.left(10)
