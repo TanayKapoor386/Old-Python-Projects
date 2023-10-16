@@ -1,0 +1,270 @@
+import turtle
+import random
+
+# Make background black
+screen = turtle.Screen()
+screen.bgcolor("black")
+
+# Dimensions for the paddles
+screen.register_shape("paddle", ((0, 0), (10, 0), (10, 100), (0, 100)))
+
+# Make the boundary box
+boxTurtle = turtle.Turtle()
+boxTurtle.color("white")
+boxTurtle.speed(0)
+boxTurtle.penup()
+boxTurtle.goto(-350, 235)
+boxTurtle.pendown()
+for i in range(2):
+    boxTurtle.forward(690)
+    boxTurtle.right(90)
+    boxTurtle.forward(450)
+    boxTurtle.right(90)
+boxTurtle.ht()
+
+# Write and make variables for scoreTurtle1
+scoreTurtle1 = turtle.Turtle()
+scoreTurtle1.speed(0)
+scoreTurtle1.color("white")
+scoreTurtle1.penup()
+scoreTurtle1.goto(-250, 185)
+scorePlayer1 = 0
+scoreTurtle1.write("Player 1:  " + str(scorePlayer1), font=("Calibri", 30, "bold"))
+scoreTurtle1.ht()
+
+# Write and make variables for scoreTurtle2
+scoreTurtle2 = turtle.Turtle()
+scoreTurtle2.speed(0)
+scoreTurtle2.color("white")
+scoreTurtle2.penup()
+scoreTurtle2.goto(0, 185)
+scorePlayer2 = 0
+scoreTurtle2.write("Player 2:  " + str(scorePlayer2), font=("Calibri", 30, "bold"))
+scoreTurtle2.ht()
+
+# Make player 1
+player1 = turtle.Turtle()
+player1.speed(0)
+player1.color("white")
+player1.shape("paddle")
+player1.setheading(90)
+player1.penup()
+player1.goto(-340, 0)
+
+# Make player 2
+player2 = turtle.Turtle()
+player2.speed(0)
+player2.color("white")
+player2.shape("paddle")
+player2.setheading(90)
+player2.penup()
+player2.goto(340, 0)
+
+# Functions for player 1
+def up1():
+    player1.sety(player1.ycor() + 20)
+
+def down1():
+    player1.sety(player1.ycor() - 20)
+
+# Functions for player 2
+def up2():
+    player2.sety(player2.ycor() + 20)
+
+def down2():
+    player2.sety(player2.ycor() - 20)
+
+# Bind event listeners for player 1
+screen.listen()
+screen.onkey(up1, "w")
+screen.onkey(down1, "s")
+
+# Bind event listeners for player 2
+screen.onkey(up2, "Up")
+screen.onkey(down2, "Down")
+
+# Start listening for events
+screen.listen()
+
+# Make the ball
+ball = turtle.Turtle()
+ball.penup()
+ball.speed(0)
+ball.color("white")
+ball.shape("circle")
+ball.right(random.randint(-30, 30))
+
+# Function to change ball direction based on context
+def changeBallDirection(context):
+    ballHeading = ball.heading()
+    if context == "topBound" or context == "bottomBound":
+        ball.setheading(360 - ballHeading)
+    elif 0 <= ballHeading < 180:
+        ball.setheading(180 - ballHeading)
+    elif 180 <= ballHeading < 360:
+        ball.setheading(540 - ballHeading)
+
+# While loop
+while True:
+    ball.forward(5)
+    # if the ball is on the left side, within p1 coordinates
+    if abs(player1.xcor() - ball.xcor()) < 10 and player1.ycor() <= ball.ycor() <= player1.ycor() + 100:
+        changeBallDirection("player1")
+    # if the ball is on the right side, within p2 coordinates
+    elif abs(player2.xcor() - ball.xcor()) < 10 and player2.ycor() <= ball.ycor() <= player2.ycor() + 100:
+        changeBallDirection("player2")
+    # if p1 missed the ball
+    elif ball.xcor() <= -350:
+        ball.setheading(180)
+        scorePlayer2 += 1
+        scoreTurtle2.clear()
+        scoreTurtle2.write("Player 2:  " + str(scorePlayer2), font=("Calibri", 30, "bold"))
+        ball.goto(0, 0)
+    # if p2 missed the ball
+    elif ball.xcor() >= 340:
+        ball.setheading(0)
+        scorePlayer1 += 1
+        scoreTurtle1.clear()
+        scoreTurtle1.write("Player 1:  " + str(scorePlayer1), font=("Calibri", 30, "bold"))
+        ball.goto(0, 0)
+    # if the ball hits the top boundary
+    elif ball.ycor() >= 235:
+        changeBallDirection("topBound")
+    # if the ball hits the bottom boundary
+    elif ball.ycor() <= -215:
+        changeBallDirection("bottomBound")
+import turtle
+import random
+
+# Make background black
+screen = turtle.Screen()
+screen.bgcolor("black")
+
+# Dimensions for the paddles
+screen.register_shape("paddle", ((0, 0), (10, 0), (10, 100), (0, 100)))
+
+# Make the boundary box
+boxTurtle = turtle.Turtle()
+boxTurtle.color("white")
+boxTurtle.speed(0)
+boxTurtle.penup()
+boxTurtle.goto(-350, 235)
+boxTurtle.pendown()
+for i in range(2):
+    boxTurtle.forward(690)
+    boxTurtle.right(90)
+    boxTurtle.forward(450)
+    boxTurtle.right(90)
+boxTurtle.ht()
+
+# Write and make variables for scoreTurtle1
+scoreTurtle1 = turtle.Turtle()
+scoreTurtle1.speed(0)
+scoreTurtle1.color("white")
+scoreTurtle1.penup()
+scoreTurtle1.goto(-250, 185)
+scorePlayer1 = 0
+scoreTurtle1.write("Player 1:  " + str(scorePlayer1), font=("Calibri", 30, "bold"))
+scoreTurtle1.ht()
+
+# Write and make variables for scoreTurtle2
+scoreTurtle2 = turtle.Turtle()
+scoreTurtle2.speed(0)
+scoreTurtle2.color("white")
+scoreTurtle2.penup()
+scoreTurtle2.goto(0, 185)
+scorePlayer2 = 0
+scoreTurtle2.write("Player 2:  " + str(scorePlayer2), font=("Calibri", 30, "bold"))
+scoreTurtle2.ht()
+
+# Make player 1
+player1 = turtle.Turtle()
+player1.speed(0)
+player1.color("white")
+player1.shape("paddle")
+player1.setheading(90)
+player1.penup()
+player1.goto(-340, 0)
+
+# Make player 2
+player2 = turtle.Turtle()
+player2.speed(0)
+player2.color("white")
+player2.shape("paddle")
+player2.setheading(90)
+player2.penup()
+player2.goto(340, 0)
+
+# Functions for player 1
+def up1():
+    player1.sety(player1.ycor() + 20)
+
+def down1():
+    player1.sety(player1.ycor() - 20)
+
+# Functions for player 2
+def up2():
+    player2.sety(player2.ycor() + 20)
+
+def down2():
+    player2.sety(player2.ycor() - 20)
+
+# Bind event listeners for player 1
+screen.listen()
+screen.onkey(up1, "w")
+screen.onkey(down1, "s")
+
+# Bind event listeners for player 2
+screen.onkey(up2, "Up")
+screen.onkey(down2, "Down")
+
+# Start listening for events
+screen.listen()
+
+# Make the ball
+ball = turtle.Turtle()
+ball.penup()
+ball.speed(0)
+ball.color("white")
+ball.shape("circle")
+ball.right(random.randint(-30, 30))
+
+# Function to change ball direction based on context
+def changeBallDirection(context):
+    ballHeading = ball.heading()
+    if context == "topBound" or context == "bottomBound":
+        ball.setheading(360 - ballHeading)
+    elif 0 <= ballHeading < 180:
+        ball.setheading(180 - ballHeading)
+    elif 180 <= ballHeading < 360:
+        ball.setheading(540 - ballHeading)
+
+# While loop
+while True:
+    ball.forward(5)
+    # if the ball is on the left side, within p1 coordinates
+    if abs(player1.xcor() - ball.xcor()) < 10 and player1.ycor() <= ball.ycor() <= player1.ycor() + 100:
+        changeBallDirection("player1")
+    # if the ball is on the right side, within p2 coordinates
+    elif abs(player2.xcor() - ball.xcor()) < 10 and player2.ycor() <= ball.ycor() <= player2.ycor() + 100:
+        changeBallDirection("player2")
+    # if p1 missed the ball
+    elif ball.xcor() <= -350:
+        ball.setheading(180)
+        scorePlayer2 += 1
+        scoreTurtle2.clear()
+        scoreTurtle2.write("Player 2:  " + str(scorePlayer2), font=("Calibri", 30, "bold"))
+        ball.goto(0, 0)
+    # if p2 missed the ball
+    elif ball.xcor() >= 340:
+        ball.setheading(0)
+        scorePlayer1 += 1
+        scoreTurtle1.clear()
+        scoreTurtle1.write("Player 1:  " + str(scorePlayer1), font=("Calibri", 30, "bold"))
+        ball.goto(0, 0)
+    # if the ball hits the top boundary
+    elif ball.ycor() >= 235:
+        changeBallDirection("topBound")
+    # if the ball hits the bottom boundary
+    elif ball.ycor() <= -215:
+        changeBallDirection("bottomBound")
