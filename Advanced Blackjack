@@ -1,0 +1,100 @@
+import random
+import time
+
+cards = {1: "Ace", 11: "Jack", 12: "Queen", 13: "King"}
+
+def show_hand(hand):
+    output_hand = []
+    for num in hand:
+        if num == 1 or num > 10:
+            output_hand.append(cards.get(num, num))
+        else:
+            output_hand.append(num)
+    return output_hand
+
+def calculate_values(hand):
+    hand_score = 0
+    num_aces = 0
+    for value in hand:
+        if value > 10:
+            hand_score += 10
+        elif value == 1:
+            hand_score += 1
+            num_aces += 1
+        else:
+            hand_score += value
+    values = [hand_score]
+    for i in range(1, num_aces + 1):
+        values.append(hand_score + i * 10)
+    return values
+
+def get_final_value(hand):
+    final_value = 0
+    possible_values = sorted(calculate_values(hand))
+    for value in possible_values:
+        if value <= 21:
+            final_value = value
+    return final_value
+
+def main():
+    print("Welcome to the game of Blackjack!")
+    print("In this game you will be dealt two cards to start. Your goal is to get as close to 21 as possible without going over - or busting! In this game, Jack, Queen, and King are each worth 10 and the Ace is worth 1 or 11\n")
+    
+    while True:
+        dealers_hand = []
+        players_hand = []
+        
+        for i in range(2):
+            players_hand.append(random.randint(1, 13))
+        
+        print("Here is your hand:\n", show_hand(players_hand))
+        continue_game = True
+
+        while continue_game:
+            choice = input("\nType in H to hit or S to stay: ")
+            
+            if choice == "H":
+                players_hand.append(random.randint(1, 13))
+                print("Here is your hand:\n", show_hand(players_hand))
+                hand_values = calculate_values(players_hand)
+
+                if min(hand_values) > 21:
+                    print("Bust!")
+                    continue_game = False
+                elif 21 in hand_values:
+                    print("Blackjack! You win!")
+                    continue_game = False
+            elif choice == "S":
+                print("\nDealer's turn")
+                while min(calculate_values(dealers_hand)) < 17:
+                    dealers_hand.append(random.randint(1, 13))
+                    time.sleep(1)
+                    print("Dealer draws a card.")
+                    print("Dealer's hand:\n", show_hand(dealers_hand))
+                
+                dealer_final_value = get_final_value(dealers_hand)
+                player_final_value = get_final_value(players_hand)
+                
+                print("\nFinal Results:")
+                print("Dealer's hand:", show_hand(dealers_hand))
+                print("Your hand:", show_hand(players_hand))
+                
+                if dealer_final_value > 21:
+                    print("Dealer busts! You win!")
+                elif player_final_value > 21:
+                    print("You bust! Dealer wins.")
+                elif dealer_final_value > player_final_value:
+                    print("Dealer wins!")
+                elif player_final_value > dealer_final_value:
+                    print("You win!")
+                else:
+                    print("It's a tie!")
+
+                continue_game = False
+
+        play_again = input("Press Enter to play again or 'Q' to quit: ").strip().lower()
+        if play_again == 'q':
+            break
+
+if __name__ == "__main__":
+    main()
