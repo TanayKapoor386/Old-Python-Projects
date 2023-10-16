@@ -1,0 +1,34 @@
+# main.py
+import random
+import time 
+"""
+t1 = t.time()
+t.sleep(100000)
+t2 = t.time()
+print(t2 - t1)
+t.time()
+"""
+
+print("Welcome to Type Racer.")
+print("Ready...")
+time.sleep(1)
+print("Set...")
+time.sleep(1)
+print("Type!")
+time.sleep(1)
+
+sentences = ["Peter Piper picked a peck of pickled peppers", "She sells seashells by the sea shore", "How much wood could a woodchuck chuck if a woodchuck could chuck wood?", "If a dog chews shoes, whose shoes does he choose?", "If you notice this notice, you will notice that this notice is not worth noticing", "I saw Susie sitting in a shoe shine shop"]
+
+num = random.randint(0,5)
+print(sentences[num])
+
+t1 = time.time()
+sentence = input(" ")
+while sentence != sentences[num]:
+  print("The sentences do not match. Please try again")
+  sentence = input(" ")
+t2 = time.time()
+
+print("You finished typing in " + str(t2-t1) + " seconds")
+  
+  
