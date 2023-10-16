@@ -1,0 +1,187 @@
+# main.py
+
+import random
+import time 
+
+board = []
+for i in range(3):
+  line = []
+  for j in range(3):
+    line.append(" ")
+  board.append(line)
+
+def printBoard(board):
+  for i in range(3):
+    for j in range(3):
+      if j == 2:
+        print(" " + board[i][j], end="")
+      else:
+        print(" " + board[i][j] + " |", end="")
+    if i != 2:
+      print("\n---+---+---")
+  print("\n")
+    
+
+  
+def rules(board, player):
+  if player == board[0][0] and player == board[0][1] and player == board[0][2]:
+    return True
+  if player == board[1][0] and player == board[1][1] and player == board[1][2]:
+    return True
+  if player == board[2][0] and player == board[2][1] and player == board[2][2]:
+    return True
+  if player == board[0][0] and player == board[1][0] and player == board[2][0]:
+    return True
+  if player == board[0][1] and player == board[1][1] and player == board[2][1]:
+    return True
+  if player == board[0][2] and player == board[1][2] and player == board[2][2]:
+    return True
+  if player == board[0][0] and player == board[1][1] and player == board[2][2]:
+    return True
+  if player == board[0][2] and player == board[1][1] and player == board[2][0]:
+    return True
+  else:
+    return False
+ 
+def boardFull(board):
+  for i in range(3):
+    for j in range(3):
+      if board[i][j] == " ":
+        return False
+  return True
+
+def aiChoice(board):
+  while True:
+    numRow = random.randint(0,2)
+    numCol = random.randint(0,2)
+    if board[numRow][numCol] == " ":
+      return [numRow, numCol]
+
+player = " "
+def coinFlip():
+  playerTurn = random.randint(0,1)
+  if playerTurn == 0:
+    return "X"
+  else:
+    return "O"
+    
+def winningMove(board,player,i,j):
+  duplicate = []
+  for a in range(3):
+    line = []
+    for b in range(3):
+      line.append(board[a][b])
+    duplicate.append(line)
+  if duplicate[i][j] != " ":
+    return False 
+  duplicate[i][j] = player
+  return rules(duplicate, player)
+
+def fork(board,player,i,j):
+  duplicate = []
+  for a in range(3):
+    line = []
+    for b in range(3):
+      line.append(board[a][b])
+    duplicate.append(line)
+  if duplicate[i][j] != " ":
+    return False 
+  duplicate[i][j] = player
+  winningMoves = 0
+  for a in range(3):
+    for b in range(3):
+      if winningMove(board,player,a,b) == True:
+        winningMoves += 1
+  if winningMoves >= 2:
+    return True
+  else:
+    return False
+    
+  
+def computerChoices(board):
+  # play immediate win
+  for i in range(3):
+    for j in range(3):
+      if winningMove(board, "O", i,j) == True:
+        return[i, j]
+  # block opponent's immediate win
+  for i in range(3):
+    for j in range(3):
+      if winningMove(board, "X", i,j) == True:
+        return[i, j]
+  # play a fork
+  for i in range(3):
+    for j in range(3):
+      if fork(board, "O", i, j) == True:
+        return [i, j]
+  # block an opponent's fork
+  numForks = 0
+  coords = [0,0]
+  for i in range(3):
+    for j in range(3):
+      if fork(board, "X", i, j) == True:
+        numForks += 1
+        coords = [i,j]
+  if numForks == 1:
+    return coords
+  elif numForks >= 2:
+    for i in range(3):
+      for j in range(3):
+        if winningMove(board, "O", i,j) == True:
+          return[i, j]
+  # play center
+  if board[1][1] == " ":
+    return[1, 1]
+  # play corners
+  corners = [[0,0], [0,2], [2,0], [2,2]]
+  for corner in corners:
+    if board[corner[0]][corner[1]] == " ":
+      return corner
+  # play random
+  aiChoice(board)
+
+player = coinFlip()
+if player == "X":
+  print("The coin flip shows that you (X) will go first!\n")
+  x = input("Press enter to begin! ")
+if player == "O":
+  print("The coin flip shows that the computer (O) will go first!\n")
+  x = input("Press enter to begin! ")
+tie = False
+while True:
+  time.sleep(0.5)
+  printBoard(board)
+  if player == "X":
+    time.sleep(1)
+    print("Your turn\n")
+    row = input("Enter a row: ")
+    column = input("Enter a column: ")
+    board[int(row)][int(column)] = "X" 
+  if player == "O":
+    time.sleep(1)
+    print("Computers turn\n")
+    move = computerChoices(board)
+    board[move[0]][move[1]] = player
+  if rules(board, player):
+    break
+  if boardFull(board):
+    tie = True
+    break
+  if player == "X":
+    player = "O"
+  else:
+    player = "X"
+    
+printBoard(board)
+  
+if tie:
+  print("It's a tie!")
+else:
+  if player == "X":
+    print("Player wins!")
+    
+    # user won
+  else:
+    print("Computer wins!")
+    
+    # agent won
