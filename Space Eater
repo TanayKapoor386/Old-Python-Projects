@@ -1,0 +1,100 @@
+import turtle,random
+
+screen = turtle.Screen()
+screen.bgcolor("black")
+
+t = turtle.Turtle()
+target = turtle.Turtle()
+
+boxDrawer = turtle.Turtle()
+boxDrawer.speed(0)
+boxDrawer.penup()
+boxDrawer.goto(-200,200)
+boxDrawer.pendown()
+boxDrawer.color("red")
+for i in range(4):
+  boxDrawer.forward(400)
+  boxDrawer.right(90)
+boxDrawer.ht()
+
+
+scoreTurtle = turtle.Turtle()
+scoreTurtle.speed(0)
+scoreTurtle.color("white")
+scoreTurtle.ht()
+scoreTurtle.penup()
+scoreTurtle.goto(-200,210)
+scoreTurtle.pendown()
+score = 0
+scoreTurtle.write("Score: " + str(score))
+
+
+t = turtle.Turtle()
+t.color("blue")
+t.shape("turtle")
+t.penup()
+t.speed(10)
+  
+def right():
+  t.right(10)
+def left():
+  t.left(10)
+  
+screen.onkey(right, "right")
+screen.onkey(left, "left")
+
+screen.listen()
+
+
+targets = []
+for i in range(10):
+  target = turtle.Turtle()
+  target.speed(0)
+  target.color("red")
+  target.shape("circle")
+  targets.append(target)
+for target in targets:
+  target.right(random.randint(0,360))
+  x = random.randint(-190,190)
+  y = random.randint(-190,190)
+  target.penup()
+  target.goto(x,y)
+  
+
+while True:
+  for target in targets:
+    target.speed(0)
+    target.forward(5)
+    t.forward(5)
+    if abs(t.xcor() - target.xcor()) < 30 and abs(t.ycor() - target.ycor()) < 30:
+      score += 1
+      scoreTurtle.clear()
+      scoreTurtle.write("Score: " + str(score))
+      a = random.randint(-100,100)
+      b = random.randint(-100,100)
+      target.goto(a,b)
+    if t.xcor() < -190 or t.xcor() > 190 or t.ycor() < -190 or t.ycor() > 190:
+      t.right(180)
+    elif t.xcor() < -200 or t.xcor() > 200 or t.ycor() < -200 or t.ycor() > 200:
+      break
+    if target.xcor() < -200 or target.xcor() > 200 or target.ycor() < -200 or target.ycor() > 200:
+      target.right(180)
+    
+
+  
+"""
+ if abs(t.xcor() - target.xcor()) < 20 or abs(t.ycor() - target.ycor()) < 20:
+     # eatTarget()
+     
+target.xcor() < -200 or target.xcor() > 200 or target.ycor() < -200 or target.ycor() > 200:
+         x = random.randint(-190,190)
+        y = random.randint(-190,190)
+        target.goto(x,y)
+
+if target.xcor() < -190 or target.xcor() > 190 or target.ycor() < -190 or target.ycor() > 190:
+    target.right(180)
+"""
+
+
+
+  
