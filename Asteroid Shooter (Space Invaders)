@@ -1,0 +1,257 @@
+# RULES
+# control the player turtle with the left and right arrow keys
+# to shoot a bullet, click/hold the space bar 
+# try to destroy as many asteroids as you can, but make sure to not let them get to the bottom of the screen, as your score will decrease
+# also, don't collide with an asteroid or you will lose
+# a score below -1 will also result in you losing the game 
+# lastly, make sure to enter full screen to be able to view to entire game
+
+  
+import turtle, random, time
+# set up screen
+screen = turtle.Screen()
+
+# set background color to black
+screen.bgcolor("black")
+
+# set up the score
+scoreTurtle = turtle.Turtle()
+scoreTurtle.speed(0)
+scoreTurtle.color("green")
+scoreTurtle.penup()
+scoreTurtle.goto(-360,-280)
+scoreTurtle.pendown()
+score = 0
+scoreTurtle.write("score: " + str(score), font = ("Courier", 30,"bold"))
+scoreTurtle.ht()
+
+
+# make spaceship
+screen.register_shape("spaceship", ((0,0), (0,-20), (20,0), (0,20), (-50,20), (-50,-20), (0,-20), (0,0), (-30,0), (-30,-20), (-75,-20), (-75,-40), (-30,-40), (-30,-20), (0,0), (0,20), (-75,20), (-75,40), (-30,40), (-30,20)))
+
+ 
+# set up player turtle
+t = turtle.Turtle()
+t.speed(0)
+t.shape("spaceship")
+t.color("red")
+t.penup()
+t.goto(0,-210)
+
+
+# event listeners for player turtle
+def player_right():
+  t.forward(10)
+  if t.xcor() > 320:
+    x = 310
+    t.setx(x)
+def player_left():
+  t.backward(10)
+  if t.xcor() < -340:
+    x = -340
+    t.setx(x)
+
+# bind keys to event listeners
+screen.onkey(player_right,"right")
+screen.onkey(player_left,"left")
+screen.listen()
+
+# make shape for small, medium, and large asteroids
+screen.register_shape("smallasteroid",((-10,-5),(-12,0),(-8,8),(0,13),(8,6),(14,0),(12,0),(8,-6),(0,-7)))
+screen.register_shape("mediumasteroid",((-15, -10),(-16, 0), (-13,12),(0,19),(12,10),(20,0),(12,-10),(0,-13)))
+screen.register_shape("largeasteroid",((-20, -16),(-21, 0), (-20,18),(0,27),(17,15),(25,0),(16,-15),(0,-21)))
+
+
+# list for all other lists 
+asteroidRow = []
+
+# create list for the first row of asteroids
+asteroidRow1 = []
+for i in range(15):
+  screen.tracer(3)
+  num = random.randint(1,4)
+  asteroid = turtle.Turtle()
+  asteroid.speed(0)
+  asteroid.setheading(270)
+  asteroid.color("grey")
+  asteroid.penup()
+  if num == 1 or num == 2:
+    asteroid.shape("smallasteroid")
+    asteroid.color("red")
+  if num == 3:
+    asteroid.shape("mediumasteroid")
+    asteroid.color("blue")
+  if num == 4:
+    asteroid.shape("largeasteroid")
+    asteroid.color("grey")
+  asteroid.goto(-340+50*i, random.randint(200,250))
+  asteroidRow1.append(asteroid)
+  screen.update()
+
+# create a list for the second row of asteroids
+asteroidRow2 = []
+for i in range(15):
+  num = random.randint(1,4)
+  asteroid2 = turtle.Turtle()
+  asteroid2.speed(0)
+  asteroid2.setheading(270)
+  asteroid2.color("grey")
+  asteroid2.penup()
+  if num == 1 or num == 2:
+    asteroid2.shape("smallasteroid")
+    asteroid2.color("red")
+  if num == 3:
+    asteroid2.shape("mediumasteroid")
+    asteroid2.color("blue")
+  if num == 4:
+    asteroid2.shape("largeasteroid")
+    asteroid2.color("grey")
+  asteroid2.goto(-340+50*i, random.randint(250,300))
+  asteroidRow2.append(asteroid2)
+
+# create a list for the third row of asteroids
+asteroidRow3 = []
+for i in range(15):
+  num = random.randint(1,4)
+  asteroid3 = turtle.Turtle()
+  asteroid3.speed(0)
+  asteroid3.setheading(270)
+  asteroid3.color("grey")
+  asteroid3.penup()
+  if num == 1 or num == 2:
+    asteroid3.shape("smallasteroid")
+    asteroid3.color("red")
+  if num == 3:
+    asteroid3.shape("mediumasteroid")
+    asteroid3.color("blue")
+  if num == 4:
+    asteroid3.shape("largeasteroid")
+    asteroid3.color("grey")
+  asteroid3.goto(-340+50*i, random.randint(300,400))
+  asteroidRow3.append(asteroid3)
+  
+# create a list for the fourth row of asteroids 
+asteroidRow4 = []
+for i in range(15):
+  num = random.randint(1,4)
+  asteroid4 = turtle.Turtle()
+  asteroid4.speed(0)
+  asteroid4.setheading(270)
+  asteroid4.color("grey")
+  asteroid4.penup()
+  if num == 1 or num == 2:
+    asteroid4.shape("smallasteroid")
+    asteroid4.color("red")
+  if num == 3:
+    asteroid4.shape("mediumasteroid")
+    asteroid4.color("blue")
+  if num == 4:
+    asteroid4.shape("largeasteroid")
+    asteroid4.color("grey")
+  asteroid4.goto(-340+50*i, random.randint(400,500))
+  asteroidRow4.append(asteroid4)
+
+# create a list for the fifth row of asteroids 
+asteroidRow5 = []
+for i in range(15):
+  num = random.randint(1,4)
+  asteroid5 = turtle.Turtle()
+  asteroid5.speed(0)
+  asteroid5.setheading(270)
+  asteroid5.color("grey")
+  asteroid5.penup()
+  if num == 1 or num == 2:
+    asteroid5.shape("smallasteroid")
+    asteroid5.color("red")
+  if num == 3:
+    asteroid5.shape("mediumasteroid")
+    asteroid5.color("blue")
+  if num == 4:
+    asteroid5.shape("largeasteroid")
+    asteroid5.color("grey")
+  asteroid5.goto(-340+50*i, random.randint(500,600))
+  asteroidRow5.append(asteroid5)
+ 
+ 
+asteroidRow.append(asteroidRow1)
+asteroidRow.append(asteroidRow2)
+asteroidRow.append(asteroidRow3)
+asteroidRow.append(asteroidRow4)
+asteroidRow.append(asteroidRow5)
+
+# make bullet shape
+screen.register_shape("bullet", ((0,0), (5,0), (5,30), (0,30)))
+
+# function to shoot bullet
+def shootBullet():
+  global score
+  bullet = turtle.Turtle()
+  bullet.speed(0)
+  bullet.ht()
+  bullet.penup()
+  bullet.color("yellow")
+  bullet.shape("bullet")
+  bullet.setheading(90)
+  bullet.goto(t.xcor(), t.ycor())
+  bullet.st()
+  Collision = False
+  for i in range(300):
+    bullet.forward(10)
+    for row in asteroidRow:
+      for asteroid in row:
+        if abs(bullet.xcor() - asteroid.xcor()) < 20 and abs(bullet.ycor() - asteroid.ycor()) < 20:
+          asteroid.goto(random.randint(-340,320),random.randint(250,300))
+          bullet.ht()
+          bullet.goto(-700,0)
+          Collision = True
+          score += 10
+          scoreTurtle.clear()
+          scoreTurtle.write("score: " + str(score), font = ("Courier", 30,"bold"))
+          break
+      if Collision:
+        break
+    if Collision:
+      break
+
+# event listeners for bullet 
+screen.onkey(shootBullet,"space")
+screen.listen()
+
+
+steps = 20
+while True:
+  for row in asteroidRow:
+    for asteroid in row:
+      asteroid.forward(steps)
+      if score == 500:
+        steps += 5
+      if score == 1000:
+        steps += 3
+      if score == 2000:
+        steps += 1
+      if asteroid.ycor() < -280:
+        score -= 10
+        scoreTurtle.clear()
+        scoreTurtle.write("score: " + str(score), font = ("Courier", 30,"bold"))
+      if score < -1:
+        t.ht()
+        asteroid.ht()
+        t.goto(-200,0)
+        t.write("Game Over!", font = ("Courier", "50", "bold"))
+      PlayerCollision = False
+      if abs(t.xcor() - asteroid.xcor()) < 40 and abs(t.ycor() - asteroid.ycor()) < 40:
+        PlayerCollision = True
+        time.sleep(10)
+        t.ht() 
+        asteroid.ht()
+        t.goto(-200,0)
+        t.write("Game Over!", font = ("Courier", "50", "bold"))
+        for row in asteroidRow:
+          for asteroid in row:
+            if PlayerCollision:
+              asteroid.ht()
+        break
+    if PlayerCollision:
+      break
+  if PlayerCollision:
+    break
