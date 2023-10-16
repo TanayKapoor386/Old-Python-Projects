@@ -1,0 +1,173 @@
+# Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+#Any live cell with two or three live neighbours lives on to the next generation.
+#Any live cell with more than three live neighbours dies, as if by overpopulation.
+#Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+#repeat.in is the starting file of initial cooridnates
+#grid, which is going to look like a 2d list, can have
+# boolean values T/F at each coordiante representing 
+#whether or not the cell is alive
+# and then, you can use O and - to fil it
+
+"""
+grid = []
+line = []
+
+for i in range(60):
+  line.append(0)
+  
+for i in range(30):
+  grid.append(line)
+  
+#print("Grid initial =\n", grid)
+"""
+import time 
+
+grid = []
+for i in range(30):
+  line = []
+  for j in range(60):
+    line.append(False)
+  grid.append(line)
+#print("grid 0 = ", grid[0])
+
+f = open("design.in")
+x = f.readlines()
+coords = []
+for lines in x:
+  lines = [int(i) for i in lines.split()]
+  coords.append(lines)
+  
+#aliveCells = []
+for point in coords:
+  grid[point[0]][point[1]] = True
+
+#print(coords) 
+#print(grid)
+
+
+def makeGrid(coords):
+  for line in coords:
+    for Boolean in line:
+      if Boolean == False:
+        print("-", end="")
+      elif Boolean == True:
+        print("o", end="")
+    print("\n")
+
+#makeGrid(grid)
+
+
+#function for neighbors
+# Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+#Any live cell with two or three live neighbours lives on to the next generation.
+#Any live cell with more than three live neighbours dies, as if by overpopulation.
+#Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+def numNeighbors(grid, isAlive, x, y):
+  neighbors = 0
+  if x-1 >= 0 and y-1 >= 0 and grid[x-1][y-1]:
+    neighbors += 1
+  if x-1 >= 0 and grid[x-1][y]:
+    neighbors += 1
+  if x-1 >= 0 and y+1 < len(grid[0]) and grid[x-1][y+1]:
+    neighbors += 1
+  if y-1 >= 0 and grid[x][y-1]:
+    neighbors += 1
+  if y+1 < len(grid[0]) and grid[x][y+1]:
+    neighbors += 1
+  if x+1 < len(grid) and y-1 >= 0 and grid[x+1][y-1]:
+    neighbors += 1
+  if x+1 < len(grid) and grid[x+1][y]:
+    neighbors += 1
+  if x+1 < len(grid) and y+1 < len(grid[0]) and grid[x+1][y+1]:
+    neighbors += 1
+  if neighbors < 2 and isAlive:
+    return False 
+  elif (neighbors == 2 or neighbors == 3) and isAlive:
+    return True
+  elif neighbors > 3 and isAlive:
+    return False
+  elif neighbors == 3 and not isAlive:
+    return True
+  else:
+    return isAlive  
+"""
+newGrid = []
+for i in range(30):
+  line = []
+  for j in range(60):
+    line.append(False)
+  newGrid.append(line)
+ 
+#print("Making new grid") 
+#makeGrid(newGrid)
+
+for x in range(len(grid)):
+  for y in range(len(grid[0])):
+    newGrid[x][y] = numNeighbors(grid, grid[x][y], x, y)
+print("making new grid")
+#print(newGrid)
+makeGrid(newGrid)
+
+newGrid2 = []
+for i in range(30):
+  line = []
+  for j in range(60):
+    line.append(False)
+  newGrid2.append(line)
+
+for x in range(len(grid)):
+  for y in range(len(grid[0])):
+    newGrid2[x][y] = numNeighbors(newGrid, newGrid[x][y], x, y)
+print("making new grid")
+#print(newGrid)
+makeGrid(newGrid2)
+"""  
+input("Welcome to Conway's Game of Life. We start with a 30x60 grid \nof cells, either alive or dead. Here are the rules:\n\t1) Any live cell with fewer than two live neighbors \n\t   dies, as if by underpopulation.\n\t2) Any live cell with two or three live neighbors \n\t   lives on to the next generation.\n\t3) Any live cell with more than three live neighbors \n\t   dies, as if by overpopulation.\n\t4) Any dead cell with exactly three live neighbors \n\t   becomes a live cell, as if by reproduction.\nPress Enter to continue:") 
+
+#i = 0
+while True:
+  newGrid = []
+  for i in range(30):
+    line = []
+    for j in range(60):
+      line.append(False)
+    newGrid.append(line)
+  for x in range(len(grid)):
+    for y in range(len(grid[0])):
+      newGrid[x][y] = numNeighbors(grid, grid[x][y], x, y)
+  makeGrid(newGrid)
+  #i += 1 
+  #if i > 10:
+    #break
+  grid = newGrid
+  print("==================================================")
+  time.sleep(0.5)
+  
+  
+  
+
+    
+
+
+
+# function for all the rules
+"""
+if  y+1 < len(grid[0]) and  grid[x][y+1]:
+    neighbors += 1
+  if grid[x][y-1] and y-1 >= 0:
+    neighbors += 1 
+  if grid[x+1][y] and x+1 < len(grid):
+    neighbors += 1 
+  if grid[x-1][y] and x-1 >= 0:
+    neighbors += 1 
+  if grid[x+1][y+1] and x+1 < len(grid) and y+1 < len(grid[0]):
+    neighbors += 1 
+  if grid[x-1][y+1] and x-1 >= 0 and y+1 < len(grid[0]):
+    neighbors += 1 
+  if grid[x+1][y-1] and x+1 < len(grid) and y-1 >= 0:
+    neighbors += 1 
+  if grid[x-1][y-1] and x-1 >= 0 and y-1 >= 0:
+    neighbors += 1 
+"""
+
